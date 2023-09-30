@@ -15,11 +15,14 @@ file(GLOB_RECURSE HEADER_FILES
 
 add_executable(${PROJECT_NAME} ${HEADER_FILES} ${SOURCE_FILES})
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake-find/")
+
 find_package(OpenGL REQUIRED)
+find_package(GLFW3 REQUIRED)
 
 #Link glfw library ONLY MACOS TODO
 set(LIBS
-        "${PROJECT_SOURCE_DIR}/lib-arm64/libglfw.3.dylib"
+        ${GLFW3_LIBRARY}
         ${OPENGL_LIBRARIES}
 )
 
