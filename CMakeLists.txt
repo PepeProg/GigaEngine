@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.26)
+include(FetchContent)
 project(engine)
 
 add_subdirectory(gainput)
@@ -27,6 +28,13 @@ set(LIBS
         ${OPENGL_LIBRARIES}
         gainput
 )
+
+FetchContent_Declare(
+        openal
+        GIT_REPOSITORY https://github.com/kcat/openal-soft.git
+        GIT_TAG        3e1c6e4351e18a6c189afd08b63e44e81ed0ecf2
+)
+FetchContent_MakeAvailable(openal)
 
 target_link_libraries(${PROJECT_NAME} "${LIBS}")
 target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_SOURCE_DIR}/gainput/lib/include")
