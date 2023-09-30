@@ -1,8 +1,7 @@
 cmake_minimum_required(VERSION 3.26)
 include(FetchContent)
-project(engine)
 
-add_subdirectory(gainput)
+project(engine)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -27,14 +26,20 @@ set(LIBS
         ${GLFW3_LIBRARY}
         ${OPENGL_LIBRARIES}
         gainput
+        OpenAL
 )
-
 FetchContent_Declare(
-        openal
+        OpenAL
         GIT_REPOSITORY https://github.com/kcat/openal-soft.git
         GIT_TAG        3e1c6e4351e18a6c189afd08b63e44e81ed0ecf2
 )
-FetchContent_MakeAvailable(openal)
+FetchContent_Declare(
+        gainput
+        GIT_REPOSITORY https://github.com/jkuhlmann/gainput.git
+        GIT_TAG        e21b15f0bc3dd3f1a745fe89a966a2457e940142
+)
+FetchContent_MakeAvailable(gainput openal)
 
 target_link_libraries(${PROJECT_NAME} "${LIBS}")
-target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_SOURCE_DIR}/gainput/lib/include")
+target_include_directories(${PROJECT_NAME} PUBLIC "${gainput_SOURCE_DIR}/lib/include")
+target_include_directories(${PROJECT_NAME} PUBLIC "${openal_SOURCE_DIR}/include")

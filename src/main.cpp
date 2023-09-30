@@ -1,5 +1,6 @@
 #include <GLFW/glfw3.h>
 #include <gainput/gainput.h>
+#include <AL/al.h>
 
 int main()
 {
@@ -21,7 +22,8 @@ int main()
     map.MapBool(ButtonConfirm, mouseId, gainput::MouseButtonLeft);
     map.MapBool(ButtonConfirm, padId, gainput::PadButtonA);
     map.MapBool(ButtonConfirm, touchId, gainput::Touch0Down);
-
+    const ALuint source = 0;
+    alSourceRewind(source);
     GLFWwindow* window;
 
     /* Initialize the library */
