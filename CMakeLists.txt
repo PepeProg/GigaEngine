@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.26)
 project(engine)
 
+add_subdirectory(gainput)
+
 set(CMAKE_CXX_STANDARD 17)
 
 # Add source files
@@ -20,10 +22,11 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake-find/")
 find_package(OpenGL REQUIRED)
 find_package(GLFW3 REQUIRED)
 
-#Link glfw library ONLY MACOS TODO
 set(LIBS
         ${GLFW3_LIBRARY}
         ${OPENGL_LIBRARIES}
+        gainput
 )
 
 target_link_libraries(${PROJECT_NAME} "${LIBS}")
+target_include_directories(${PROJECT_NAME} PUBLIC "${PROJECT_SOURCE_DIR}/gainput/lib/include")

@@ -1,7 +1,27 @@
 #include "../GLFW/glfw3.h"
+#include <gainput/gainput.h>
 
 int main()
 {
+
+    enum Button
+    {
+        ButtonConfirm
+    };
+
+    gainput::InputManager manager;
+    manager.SetDisplaySize(640, 480);
+    const gainput::DeviceId keyboardId = manager.CreateDevice<gainput::InputDeviceKeyboard>();
+    const gainput::DeviceId mouseId = manager.CreateDevice<gainput::InputDeviceMouse>();
+    const gainput::DeviceId padId = manager.CreateDevice<gainput::InputDevicePad>();
+    const gainput::DeviceId touchId = manager.CreateDevice<gainput::InputDeviceTouch>();
+
+    gainput::InputMap map(manager);
+    map.MapBool(ButtonConfirm, keyboardId, gainput::KeyReturn);
+    map.MapBool(ButtonConfirm, mouseId, gainput::MouseButtonLeft);
+    map.MapBool(ButtonConfirm, padId, gainput::PadButtonA);
+    map.MapBool(ButtonConfirm, touchId, gainput::Touch0Down);
+
     GLFWwindow* window;
 
     /* Initialize the library */
@@ -22,6 +42,16 @@ int main()
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
+
+        manager.Update();
+
+        // May need some platform-specific message handling here
+
+        if (map.GetBoolWasDown(ButtonConfirm))
+        {
+            // Confirmed!
+        }
+
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
 
