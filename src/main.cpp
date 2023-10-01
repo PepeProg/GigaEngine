@@ -1,9 +1,34 @@
 #include <GLFW/glfw3.h>
 #include <gainput/gainput.h>
 #include <AL/al.h>
+#include <AL/alc.h>
+#include <iostream>
 
-int main()
-{
+
+
+int testSound() {
+    ALCdevice *device;
+
+    device = alcOpenDevice(NULL);
+    if (!device) {
+        std::cout << "device is not defined, testSound func stopped" << std::endl;
+        return -1;
+    }
+
+    ALboolean enumeration;
+
+    enumeration = alcIsExtensionPresent(NULL, "ALC_ENUMERATION_EXT");
+    if (enumeration == AL_FALSE) {
+        std::cout << "enumeration not supported, testSound func stopped" << std::endl;
+        return -1;
+    } else {
+        std::cout << "enumeration supported, proceed" << std::endl;
+    }
+
+    return 0;
+}
+
+int testInput() {
 
     enum Button
     {
@@ -22,8 +47,24 @@ int main()
     map.MapBool(ButtonConfirm, mouseId, gainput::MouseButtonLeft);
     map.MapBool(ButtonConfirm, padId, gainput::PadButtonA);
     map.MapBool(ButtonConfirm, touchId, gainput::Touch0Down);
-    const ALuint source = 0;
-    alSourceRewind(source);
+
+    manager.Update();
+
+    // May need some platform-specific message handling here
+
+    if (map.GetBoolWasDown(ButtonConfirm))
+    {
+        // Confirmed!
+    }
+
+    return 0;
+}
+
+int main()
+{
+//    testInput();
+//    testSound();
+
     GLFWwindow* window;
 
     /* Initialize the library */
@@ -44,15 +85,6 @@ int main()
     /* Loop until the user closes the window */
     while (!glfwWindowShouldClose(window))
     {
-
-        manager.Update();
-
-        // May need some platform-specific message handling here
-
-        if (map.GetBoolWasDown(ButtonConfirm))
-        {
-            // Confirmed!
-        }
 
         /* Render here */
         glClear(GL_COLOR_BUFFER_BIT);
