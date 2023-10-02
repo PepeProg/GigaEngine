@@ -24,15 +24,23 @@ set_target_properties(RME PROPERTIES
         CXX_EXTENSIONS OFF
 )
 ############################## ADD LIBRARIES ##################################
-target_include_directories(RME PRIVATE ${LIBRARIES}/DiligentCore)
+target_include_directories(RME PRIVATE
+        ${LIBRARIES}/DiligentCore
+        ${LIBRARIES}/bgfx/include
+        ${LIBRARIES}/bx/include
+        ${LIBRARIES}/bimg/include
+)
 add_subdirectory(${LIBRARIES}/DiligentCore) # RENDER ENGINE CORE
 
 ############################## LINK LIBRARIES #################################
 target_link_libraries(RME
 PRIVATE
         Diligent-BuildSettings
-        Diligent-GraphicsEngineOpenGL-shared GL X11
-        Diligent-GraphicsEngineVk-shared xcb
+        Diligent-GraphicsEngineOpenGL-shared
+        GL
+        X11
+        Diligent-GraphicsEngineVk-shared
+        xcb
 )
 
 ############################## COPY SHARED LIBRARIES FOR EXE ##################
