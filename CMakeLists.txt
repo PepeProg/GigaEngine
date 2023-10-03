@@ -10,11 +10,6 @@ set(LIBRARIES ${CMAKE_SOURCE_DIR}/deps/libraries) # SET PATH TO LIBRARIES
 
 ############################## ADD EXE && OPTIONS ########################################
 add_executable(RME ${SOURCE_EXE})
-target_compile_options(RME
-PRIVATE
-        -DENGINE_DLL
-)
-
 set_target_properties(RME PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED YES)
 target_compile_features(RME PRIVATE cxx_std_14)
 set_target_properties(RME PROPERTIES
@@ -23,24 +18,27 @@ set_target_properties(RME PROPERTIES
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF
 )
+target_compile_options(RME PRIVATE -lSDL2 -lGL -lX11 -ldl -lpthread -lrt)
 ############################## ADD LIBRARIES ##################################
+find_package(SDL2 REQUIRED)
+
 target_include_directories(RME PRIVATE
         ${LIBRARIES}/DiligentCore
         ${LIBRARIES}/bgfx/include
         ${LIBRARIES}/bx/include
         ${LIBRARIES}/bimg/include
+        ${SDL2_INCLUDE_DIRS}
 )
-add_subdirectory(${LIBRARIES}/DiligentCore) # RENDER ENGINE CORE
+add_subdirectory(${LIBRARIES}/bgfx.cmake) # RENDER ENGINE CORE
 
 ############################## LINK LIBRARIES #################################
 target_link_libraries(RME
 PRIVATE
-        Diligent-BuildSettings
-        Diligent-GraphicsEngineOpenGL-shared
-        GL
-        X11
-        Diligent-GraphicsEngineVk-shared
-        xcb
+        bgfx
+        bimg
+        bx
+        glfw
+        ${SDL2_LIBRARIES}
 )
 
 ############################## COPY SHARED LIBRARIES FOR EXE ##################

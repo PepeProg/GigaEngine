@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="VcsDirectoryMappings">
-    <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/deps/libraries/DiligentCore" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/deps/libraries/DiligentCore/ThirdParty/SPIRV-Cross" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/deps/libraries/DiligentCore/ThirdParty/SPIRV-Headers" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/deps/libraries/DiligentCore/ThirdParty/SPIRV-Tools" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/deps/libraries/DiligentCore/ThirdParty/Vulkan-Headers" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/deps/libraries/DiligentCore/ThirdParty/glslang" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/deps/libraries/DiligentCore/ThirdParty/googletest" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/deps/libraries/DiligentCore/ThirdParty/volk" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/deps/libraries/DiligentCore/ThirdParty/xxHash" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/deps/libraries/bgfx" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/deps/libraries/bimg" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/deps/libraries/bx" vcs="Git" />
+    <mapping directory="" vcs="Git" />
   </component>
 </project>
