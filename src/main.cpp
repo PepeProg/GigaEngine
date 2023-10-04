@@ -15,91 +15,15 @@
 #include <fs_shader.sc.mtl.bin.h>
 #define vertexPivko vs_shader_mtl
 #define fragmentPivko fs_shader_mtl
-#elifdef __LINUX__
+#endif
+#ifdef __linux__
 #include <vs_shader.sc.glsl.bin.h>
 #include <fs_shader.sc.glsl.bin.h>
 #define vertexPivko vs_shader_glsl
 #define fragmentPivko fs_shader_glsl
 #endif
 
-
-
 SDL_Window* window = NULL;
-
-//static const bgfx::Memory* loadMem(bx::FileReaderI* _reader, const char* _filePath)
-//{
-//    if (bx::open(_reader, _filePath) )
-//    {
-//        uint32_t size = (uint32_t)bx::getSize(_reader);
-//        const bgfx::Memory* mem = bgfx::alloc(size+1);
-//        bx::read(_reader, mem->data, size, bx::ErrorAssert{});
-//        bx::close(_reader);
-//        mem->data[mem->size-1] = '\0';
-//        return mem;
-//    }
-//
-//    return NULL;
-//}
-
-//static bgfx::ShaderHandle loadShader(bx::FileReaderI* _reader, const char* _name)
-//{
-//    char filePath[512];
-//
-//    const char* shaderPath = "???";
-//
-//    switch (bgfx::getRendererType() )
-//    {
-//        case bgfx::RendererType::Noop:
-//        case bgfx::RendererType::Direct3D9:  shaderPath = "shaders/dx9/";   break;
-//        case bgfx::RendererType::Direct3D11:
-//        case bgfx::RendererType::Direct3D12: shaderPath = "shaders/dx11/";  break;
-//        case bgfx::RendererType::Agc:
-//        case bgfx::RendererType::Gnm:        shaderPath = "shaders/pssl/";  break;
-//        case bgfx::RendererType::Metal:      shaderPath = "shaders/metal/"; break;
-//        case bgfx::RendererType::Nvn:        shaderPath = "shaders/nvn/";   break;
-//        case bgfx::RendererType::OpenGL:     shaderPath = "shaders/glsl/";  break;
-//        case bgfx::RendererType::OpenGLES:   shaderPath = "shaders/essl/";  break;
-//        case bgfx::RendererType::Vulkan:     shaderPath = "shaders/spirv/"; break;
-//        case bgfx::RendererType::WebGPU:     shaderPath = "shaders/spirv/"; break;
-//
-//        case bgfx::RendererType::Count:
-//            BX_ASSERT(false, "You should not be here!");
-//            break;
-//    }
-//
-//    bx::strCopy(filePath, BX_COUNTOF(filePath), shaderPath);
-//    bx::strCat(filePath, BX_COUNTOF(filePath), _name);
-//    bx::strCat(filePath, BX_COUNTOF(filePath), ".bin");
-//
-//    bgfx::ShaderHandle handle = bgfx::createShader(loadMem(_reader, filePath) );
-//    bgfx::setName(handle, _name);
-//
-//    return handle;
-//}
-
-//bgfx::ShaderHandle loadShader(const char* _name)
-//{
-//    return loadShader(entry::getFileReader(), _name);
-//}
-
-bgfx::ShaderHandle loadShader(const char* _name) {
-    char* data = new char[4096];
-    std::ifstream file;
-    size_t fileSize;
-    file.open(_name);
-    if(file.is_open()) {
-        file.seekg(0, std::ios::end);
-        fileSize = file.tellg();
-        file.seekg(0, std::ios::beg);
-        file.read(data, fileSize);
-        file.close();
-    }
-    const bgfx::Memory* mem = bgfx::copy(data,fileSize+1);
-    mem->data[mem->size-1] = '\0';
-    bgfx::ShaderHandle handle = bgfx::createShader(mem);
-    bgfx::setName(handle, _name);
-    return handle;
-}
 
 struct PosColorVertex
 {
@@ -169,25 +93,26 @@ int main(int argc, char* argv[])
     }
 
     bgfx::Init init;
+
+#ifdef __APPLE__
     init.platformData.nwh  = (void*)(uintptr_t)wmi.info.cocoa.window;
     init.platformData.ndt  = wmi.info.cocoa.window;
+#endif
+#ifdef __linux__
+    init.platformData.nwh  = (void*)(uintptr_t)wmi.info.x11.window;
+    init.platformData.ndt  = wmi.info.x11.display;
+#endif
+
     init.resolution.width  = 1600;
     init.resolution.height = 800;
 
-    // Tell bgfx about the platform and window
-    //    bgfx::setPlatformData(pd);
-
     // Render an empty frame
     bgfx::renderFrame();
-    std::cout << " 00000000000000000000000000000000000000  \n";
 
     // Initialize bgfx
     bgfx::init(init);
 
-    std::cout << " 11111111111111111111111111111111111111  \n";
     PosColorVertex::init();
-
-    std::cout << " 22222222222222222222222222222222222222  \n";
 
     m_vbh = bgfx::createVertexBuffer(
             // Static data can be passed with bgfx::makeRef
@@ -199,11 +124,6 @@ int main(int argc, char* argv[])
             // Static data can be passed with bgfx::makeRef
             bgfx::makeRef(s_cubeTriList, sizeof(s_cubeTriList))
     );
-    std::cout << " 3 \n";
-
-    bgfx::ShaderHandle vsh = loadShader("vs_shader.bin");
-    bgfx::ShaderHandle fsh = loadShader("fs_shader.bin");
-    std::cout << " 4 \n";
 
     const bgfx::Memory* memVertex = bgfx::copy(vertexPivko, sizeof(vertexPivko));
     bgfx::ShaderHandle handleVertex = bgfx::createShader(memVertex);
@@ -211,29 +131,23 @@ int main(int argc, char* argv[])
     const bgfx::Memory* memFragment = bgfx::copy(fragmentPivko, sizeof(fragmentPivko));
     bgfx::ShaderHandle handleFragment = bgfx::createShader(memFragment);
     m_program = bgfx::createProgram(handleVertex, handleFragment,  true);
-    std::cout << " 5 \n";
 
     // Reset window
     bgfx::reset(1600, 800, BGFX_RESET_VSYNC);
-    std::cout << " 6 \n";
 
     // Enable debug text.
     bgfx::setDebug(BGFX_DEBUG_TEXT /*| BGFX_DEBUG_STATS*/);
-    std::cout << " 7 \n";
 
     // Set view rectangle for 0th view
     bgfx::setViewRect(0, 0, 0, uint16_t(1600), uint16_t(800));
-    std::cout << " 8 \n";
 
     // Clear the view rect
     bgfx::setViewClear(0,
                        BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH,
                        0x443355FF, 1.0f, 0);
-    std::cout << " 9 \n";
 
     // Set empty primitive on screen
     bgfx::touch(0);
-    std::cout << " 10 \n";
 
     // OPEN TILL CLOSE
     bool quit = false;
