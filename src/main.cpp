@@ -9,12 +9,20 @@
 #include <SDL2/SDL_syswm.h>
 #include "iostream"
 #include <fstream>
-#include <bx/commandline.h>
-#include <bx/endian.h>
-#include <bx/math.h>
-#include <bx/readerwriter.h>
-#include <bx/string.h>
-#include <entry.h>
+
+#ifdef __APPLE__
+#include <vs_shader.sc.mtl.bin.h>
+#include <fs_shader.sc.mtl.bin.h>
+#define vertexPivko vs_shader_mtl
+#define fragmentPivko fs_shader_mtl
+#elifdef __LINUX__
+#include <vs_shader.sc.glsl.bin.h>
+#include <fs_shader.sc.glsl.bin.h>
+#define vertexPivko vs_shader_glsl
+#define fragmentPivko fs_shader_glsl
+#endif
+
+
 
 SDL_Window* window = NULL;
 
@@ -75,7 +83,7 @@ SDL_Window* window = NULL;
 //}
 
 bgfx::ShaderHandle loadShader(const char* _name) {
-    char* data = new char[2048];
+    char* data = new char[4096];
     std::ifstream file;
     size_t fileSize;
     file.open(_name);
@@ -161,8 +169,8 @@ int main(int argc, char* argv[])
     }
 
     bgfx::Init init;
-    init.platformData.nwh  = (void*)(uintptr_t)wmi.info.x11.window;
-    init.platformData.ndt  = wmi.info.x11.display;
+    init.platformData.nwh  = (void*)(uintptr_t)wmi.info.cocoa.window;
+    init.platformData.ndt  = wmi.info.cocoa.window;
     init.resolution.width  = 1600;
     init.resolution.height = 800;
 
@@ -197,7 +205,12 @@ int main(int argc, char* argv[])
     bgfx::ShaderHandle fsh = loadShader("fs_shader.bin");
     std::cout << " 4 \n";
 
-    m_program = bgfx::createProgram(vsh,fsh,  true);
+    const bgfx::Memory* memVertex = bgfx::copy(vertexPivko, sizeof(vertexPivko));
+    bgfx::ShaderHandle handleVertex = bgfx::createShader(memVertex);
+
+    const bgfx::Memory* memFragment = bgfx::copy(fragmentPivko, sizeof(fragmentPivko));
+    bgfx::ShaderHandle handleFragment = bgfx::createShader(memFragment);
+    m_program = bgfx::createProgram(handleVertex, handleFragment,  true);
     std::cout << " 5 \n";
 
     // Reset window
