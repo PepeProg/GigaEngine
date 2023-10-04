@@ -6,6 +6,8 @@
 #ifndef ENTRY_H_HEADER_GUARD
 #define ENTRY_H_HEADER_GUARD
 
+#undef None
+
 #include "dbg.h"
 #include <bgfx/bgfx.h>
 #include <bx/bx.h>

@@ -25,6 +25,7 @@ find_package(SDL2 REQUIRED)
 target_include_directories(RME PRIVATE
         ${LIBRARIES}/DiligentCore
         ${LIBRARIES}/bgfx/include
+        ${LIBRARIES}/bgfx.cmake/bgfx/examples/common/entry
         ${LIBRARIES}/bx/include
         ${LIBRARIES}/bimg/include
         ${SDL2_INCLUDE_DIRS}

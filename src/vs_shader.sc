@@ -1,7 +1,7 @@
 $input a_position, a_color0
 $output v_color0
 
-#include <bgfx_shader.sh>
+#include </home/summernight/Code/C++/GameEngine/GigaEngine/deps/libraries/bgfx.cmake/bgfx/src/bgfx_shader.sh>
 
 void main()
 {
