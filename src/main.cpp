@@ -54,7 +54,6 @@ static PosColorVertex s_cubeVertices[] =
         { -0.5f,  0.5f, 0.0f, 0xff00ff00 }
 };
 
-
 static const uint16_t s_cubeTriList[] =
 {
         0,1,3,
@@ -125,10 +124,10 @@ int main(int argc, char* argv[])
             bgfx::makeRef(s_cubeTriList, sizeof(s_cubeTriList))
     );
 
-    const bgfx::Memory* memVertex = bgfx::copy(vertexPivko, sizeof(vertexPivko));
+    const bgfx::Memory* memVertex = bgfx::copy(vertexPivko, sizeof(vertexPivko + 2));
     bgfx::ShaderHandle handleVertex = bgfx::createShader(memVertex);
 
-    const bgfx::Memory* memFragment = bgfx::copy(fragmentPivko, sizeof(fragmentPivko));
+    const bgfx::Memory* memFragment = bgfx::copy(fragmentPivko, sizeof(fragmentPivko + 2));
     bgfx::ShaderHandle handleFragment = bgfx::createShader(memFragment);
     m_program = bgfx::createProgram(handleVertex, handleFragment,  true);
 
