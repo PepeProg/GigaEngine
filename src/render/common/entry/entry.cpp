@@ -646,7 +646,7 @@ restart:
 		s_restartArgs[0] = '\0';
 		if (0 == s_numApps)
 		{
-			result = ::_main_(_argc, (char**)_argv);
+//			result = ::_main_(_argc, (char**)_argv);
 		}
 		else
 		{

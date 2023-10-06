@@ -124,10 +124,10 @@ int main(int argc, char* argv[])
             bgfx::makeRef(s_cubeTriList, sizeof(s_cubeTriList))
     );
 
-    const bgfx::Memory* memVertex = bgfx::copy(vertexPivko, sizeof(vertexPivko + 2));
+    const bgfx::Memory* memVertex = bgfx::copy(vertexPivko, sizeof(vertexPivko));
     bgfx::ShaderHandle handleVertex = bgfx::createShader(memVertex);
 
-    const bgfx::Memory* memFragment = bgfx::copy(fragmentPivko, sizeof(fragmentPivko + 2));
+    const bgfx::Memory* memFragment = bgfx::copy(fragmentPivko, sizeof(fragmentPivko));
     bgfx::ShaderHandle handleFragment = bgfx::createShader(memFragment);
     m_program = bgfx::createProgram(handleVertex, handleFragment,  true);
 
