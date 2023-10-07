@@ -1,15 +1,10 @@
 #include "window.h"
-#include <cstdio>
 #include <cstring>
 #include "bgfx/bgfx.h"
 #include "bgfx/platform.h"
-#include "bx/math.h"
-#include "string"
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_syswm.h>
-#include "iostream"
-#include <fstream>
 
 SDL_Window* window = NULL;
 
@@ -45,7 +40,6 @@ void WindowSDL::init(uint32_t _width, uint32_t _height) {
     init.platformData.nwh  = (void*)(uintptr_t)wmi.info.x11.window;
     init.platformData.ndt  = wmi.info.x11.display;
 #endif
-
     init.resolution.width  = _width;
     init.resolution.height = _height;
 
@@ -86,10 +80,14 @@ void WindowSDL::update()
 
 
 
-
         }
     }
 }
+
+void WindowSDL::setRenderObj() {
+
+}
+
 
 void WindowSDL::shutdown()
 {

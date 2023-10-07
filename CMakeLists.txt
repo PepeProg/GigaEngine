@@ -60,7 +60,5 @@ PRIVATE
         bimg
         bx
         ${SDL2_LIBRARIES}
-        example-common
-#        texturev
 )
 
