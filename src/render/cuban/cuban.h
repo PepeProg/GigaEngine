@@ -9,6 +9,7 @@
 
 class Cuban : public Application {
 
+    void init() override;
     void update() override;
 
 };

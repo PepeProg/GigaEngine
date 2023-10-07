@@ -8,7 +8,8 @@
 
 class Application {
 public:
-    virtual void update();
+    virtual void init() = 0;
+    virtual void update() = 0;
 };
 
 

@@ -65,6 +65,8 @@ void WindowSDL::init(uint32_t _width, uint32_t _height) {
 
     // Set empty primitive on screen
     bgfx::touch(0);
+
+    Apps = new Application*[5];
 }
 
 void WindowSDL::update()
@@ -78,16 +80,15 @@ void WindowSDL::update()
                 quit = true;
             }
 
-
-
+            Apps[0]->update();
         }
     }
 }
 
-void WindowSDL::setRenderObj() {
-
+void WindowSDL::setRenderObj(Application* App) {
+    Apps[0] = App;
+    App->init();
 }
-
 
 void WindowSDL::shutdown()
 {
