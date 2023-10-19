@@ -1,5 +1,6 @@
 #include "render/window/window.h"
 #include "render/cuban/cuban.h"
+#include <thread>
 
 int main(int argc, char* argv[])
 {
@@ -9,6 +10,7 @@ int main(int argc, char* argv[])
 
     auto cuban = new Cuban();
     HUI.setRenderObj(cuban);
+
     HUI.update();
     HUI.shutdown();
 

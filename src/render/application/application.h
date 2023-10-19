@@ -10,6 +10,7 @@ class Application {
 public:
     virtual void init() = 0;
     virtual void update() = 0;
+    bool isInited = false;
 };
 
 

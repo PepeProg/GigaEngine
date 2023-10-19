@@ -2,11 +2,14 @@
 #include <cstring>
 #include "bgfx/bgfx.h"
 #include "bgfx/platform.h"
+#include "bx/math.h"
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_syswm.h>
+#include <iostream>
+#include <ctime>
 
-SDL_Window* window = NULL;
+static SDL_Window* window = NULL;
 
 void WindowSDL::init(uint32_t _width, uint32_t _height) {
 
@@ -66,7 +69,7 @@ void WindowSDL::init(uint32_t _width, uint32_t _height) {
     // Set empty primitive on screen
     bgfx::touch(0);
 
-    Apps = new Application*[5];
+    Apps = std::vector<Application*>();
 }
 
 void WindowSDL::update()
@@ -80,14 +83,39 @@ void WindowSDL::update()
                 quit = true;
             }
 
-            Apps[0]->update();
+            const bx::Vec3 at  = { 0.0f, 0.0f,   0.0f };
+            const bx::Vec3 eye = { 0.0f, 0.0f, 10.0f };
+            // Set view and projection matrix for view 0.
+            float view[16];
+            bx::mtxLookAt(view, eye, at);
+            float proj[16];
+            bx::mtxProj(proj,
+                        60.0f,
+                        float(1600)/float(800),
+                        0.1f, 100.0f,
+                        bgfx::getCaps()->homogeneousDepth);
+            bgfx::setViewTransform(0, view, proj);
+            bgfx::setViewRect(0, 0, 0,
+                              1600,
+                              800);
+
+            // Set render states.
+            bgfx::setState(BGFX_STATE_DEFAULT);
+
+            for (auto app : Apps) {
+                if (!app->isInited) {
+                    app->init();
+                }
+                app->update();
+            }
+
+            bgfx::frame();
         }
     }
 }
 
 void WindowSDL::setRenderObj(Application* App) {
-    Apps[0] = App;
-    App->init();
+    Apps.push_back(App);
 }
 
 void WindowSDL::shutdown()

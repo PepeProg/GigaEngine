@@ -1,4 +1,5 @@
 #include <bgfx/bgfx.h>
+#include <vector>
 #include "../application/application.h"
 
 class WindowSDL {
@@ -15,7 +16,7 @@ public:
     int64_t m_timeOffset;
 
 private:
-    Application** Apps;
+    std::vector<Application*> Apps;
 };
 
 

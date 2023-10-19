@@ -8,9 +8,9 @@ set(CMAKE_CXX_STANDARD 23)
 
 set(LIBRARIES ${CMAKE_SOURCE_DIR}/deps/libraries) # SET PATH TO LIBRARIES
 
-set(BGFX_3RDPARTY ${LIBRARIES}/bgfx.cmake/bgfx/3rdparty)
-
 add_subdirectory(${LIBRARIES}/bgfx.cmake) # RENDER ENGINE CORE
+
+add_subdirectory(${LIBRARIES}/assimp-master) # PA
 
 file(GLOB_RECURSE SOURCE_FILES
         ${CMAKE_SOURCE_DIR}/src/*.c
@@ -49,8 +49,6 @@ find_package(SDL2 REQUIRED)
 target_include_directories(RME PRIVATE
         ${SDL2_INCLUDE_DIRS}
         ${CMAKE_BINARY_DIR}/include/generated/shaders
-#        ${LIBRARIES}/bgfx.cmake
-        ${LIBRARIES}/bgfx.cmake/bgfx/3rdparty
 )
 ############################## LINK LIBRARIES #################################
 
@@ -60,5 +58,6 @@ PRIVATE
         bimg
         bx
         ${SDL2_LIBRARIES}
+        assimp
 )
 
